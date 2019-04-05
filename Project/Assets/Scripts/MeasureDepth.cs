@@ -4,6 +4,9 @@ using UnityEngine;
 using Windows.Kinect;
 
 public class MeasureDepth : MonoBehaviour {
+    #region Declarations
+    public delegate void NewTriggerPoints(List<Vector2> triggerPoints);
+    public static event NewTriggerPoints OnTriggerPoints = null;
 
     public MultiSourceManager mMultiSource;
     public Texture2D mDeptTexture;
@@ -33,6 +36,7 @@ public class MeasureDepth : MonoBehaviour {
     private ColorSpacePoint[] mColorSpacePoints = null;
     private ushort[] mDepthData;
     private List<ValidPoint> mValidPoints = null;
+    private List<Vector2> mTriggerPoints = null;
 
 
     //Has reference to our kinect sensor and camera
@@ -46,6 +50,8 @@ public class MeasureDepth : MonoBehaviour {
     //Depth sensor creates image that is 512x424
     private readonly Vector2Int mDepthResolution = new Vector2Int(512, 424);
     private Rect mRect;
+
+    #endregion
 
     private void Awake()
     {
@@ -63,9 +69,17 @@ public class MeasureDepth : MonoBehaviour {
 
     private void Update()
     {
+        mValidPoints = DepthToColour();
+
+        mTriggerPoints = FilterToTrigger(mValidPoints);
+
+        if(OnTriggerPoints != null && mTriggerPoints.Count != 0)
+        {
+            OnTriggerPoints(mTriggerPoints);
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            mValidPoints = DepthToColour();
 
             mRect = CreateRect(mValidPoints);
 
@@ -78,6 +92,16 @@ public class MeasureDepth : MonoBehaviour {
     private void OnGUI()
     {
         GUI.Box(mRect, "");
+
+        if(mTriggerPoints == null)
+        {
+            return;
+        }
+        foreach(Vector2 point in mTriggerPoints)
+        {
+            Rect rect = new Rect(point, new Vector2(10, 10));
+            GUI.Box(rect, "");
+        }
     }
 
     private List<ValidPoint> DepthToColour()
@@ -137,6 +161,32 @@ public class MeasureDepth : MonoBehaviour {
         }
 
         return validPoints;
+    }
+
+    //Filtering valid points to a list of trigger points
+    private List<Vector2> FilterToTrigger(List<ValidPoint> validPoints)
+    {
+        List<Vector2> triggerPoints = new List<Vector2>();
+
+        //Go through each of the points and check if they are closer to teh kinect than where the wall is
+        foreach(ValidPoint point in validPoints)
+        {
+            //Not beyond the wall
+            if (!point.mWithinWallDepth)
+            {
+                
+                //test the screen point
+                if(point.z < mWallDepth * mDepthSensitivity)
+                {
+                    //Create the screen point
+                    Vector2 screenPoint = ScreenToCamera(new Vector2(point.colorSpace.X, point.colorSpace.Y));
+
+                    triggerPoints.Add(screenPoint);
+                }
+            }
+        }
+
+        return triggerPoints;
     }
 
     //Use colorSpacePoints to create the texture
