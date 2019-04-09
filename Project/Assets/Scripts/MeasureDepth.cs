@@ -88,6 +88,42 @@ public class MeasureDepth : MonoBehaviour {
         }
     }
 
+    public void setDepth(float depth)
+    {
+        Debug.Log(depth);
+        mDepthSensitivity = depth;
+    }
+
+    public void setWallDepth(float depth)
+    {
+        Debug.Log(depth);
+        mWallDepth = depth;
+    }
+
+    public void setTop(float val)
+    {
+        Debug.Log(val);
+        mTopCutOff = val;
+    }
+
+    public void setBottom(float val)
+    {
+        Debug.Log(val);
+        mBottomCutOff = val;
+    }
+
+    public void setLeft(float val)
+    {
+        Debug.Log(val);
+        mLeftCutOff = val;
+    }
+
+    public void setRight(float val)
+    {
+        Debug.Log(val);
+        mRightCutOff = val;
+    }
+
     //Test function to draw rectangle
     private void OnGUI()
     {
