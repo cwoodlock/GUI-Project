@@ -14,22 +14,22 @@ public class MeasureDepth : MonoBehaviour {
     //Cutoff the screen to only read a certain amount of space
     //Slider to adjust sensitivity
     [Range(0, 1.0f)]
-    public float mDepthSensitivity = 1;
+    public float mDepthSensitivity = 1f;
     //See how far the kinect is away from the wall
     [Range(-10, 10f)]
-    public float mWallDepth = -10;
+    public float mWallDepth = -10f;
 
     //Parts of wall to cut off
     [Header("Top and Bottom")]
     [Range(-1, 1f)]
-    public float mTopCutOff = 1;
+    public float mTopCutOff = 1f;
     [Range(-1, 1f)]
-    public float mBottomCutOff = -1;
+    public float mBottomCutOff = -1f;
     [Header("Left and Right")]
     [Range(-1, 1f)]
-    public float mLeftCutOff = -1;
+    public float mLeftCutOff = -1f;
     [Range(-1, 1f)]
-    public float mRightCutOff = 1;
+    public float mRightCutOff = 1f;
 
     //Arrays to be used to store the camera space points and colout space points
     private CameraSpacePoint[] mCameraSpacePoints = null;
