@@ -22,6 +22,7 @@ public class RectTrigger : MonoBehaviour {
         mImage = GetComponent<Image>();
     }
 
+
     private void OnDestroy()
     {
         MeasureDepth.OnTriggerPoints += OnTriggerPoints;
