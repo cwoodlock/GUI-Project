@@ -5,18 +5,16 @@ using UnityEngine.UI;
 
 public class SpawnRects : MonoBehaviour {
 
-    public GameObject rectTrigger;
-    public RawImage[] rects;
+    public GameObject[] rects;
 
-    public void CreateRects()
+    public void Start()
     {
-        int arrayIdx = Random.Range(0, rects.Length);
-        RawImage rectImage = rects[arrayIdx];
-        string rectName = rectImage.name;
+        rects[0].transform.position = new Vector3(Screen.width/2, Screen.height - 160, 0);
+        //Debug.Log("Y val: " + Screen.height);
+        rects[1].transform.position = new Vector3((Screen.width / 2) + 200, Screen.height - 360, 0);
+        rects[2].transform.position = new Vector3((Screen.width / 2) - 200, Screen.height - 360, 0);
+        rects[3].transform.position = new Vector3((Screen.width / 2) + 400, Screen.height - 560, 0);
+        rects[4].transform.position = new Vector3((Screen.width / 2) - 400, Screen.height - 560, 0);
 
-        GameObject newRect = Instantiate(rectTrigger);
-
-        newRect.name = rectName;
-        //newRect.GetComponent<RectTrigger>().
     }
 }

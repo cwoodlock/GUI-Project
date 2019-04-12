@@ -51,6 +51,8 @@ public class RectTrigger : MonoBehaviour {
         {
             mIsTriggered = true;
             mImage.color = Color.red;
+            Score.scoreValue += 10;
+            
         }
     }
 }
