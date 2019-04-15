@@ -47,7 +47,7 @@ public class RectTrigger : MonoBehaviour {
             }
         }
 
-        if(count > mSensitivity)
+        if(count > mSensitivity && mImage.color == Color.green)
         {
             mIsTriggered = true;
             mImage.color = Color.red;
